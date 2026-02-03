@@ -5,19 +5,44 @@ import sqlite3
 # ==================================================
 
 def total_customers(conn):
-    pass
-
+    query = '''
+            SELECT COUNT(customers.customer_id) AS Total_Customers FROM customers
+            '''
+    cursor = conn.execute(query)
+    Total_Customers = cursor.fetchone()
+    print(f"\nTotal Number of Customers: {Total_Customers[0]}")
 
 def customer_signup_range(conn):
-    pass
+
+    query = '''
+            SELECT customers.customer_name, DATE(customers.signup_date) AS Signup_Date FROM customers GROUP BY Signup_Date
+            '''
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+    for x in result:
+        print(x[0], x[1])
 
 
 def order_summary_stats(conn):
-    pass
+    query = '''
+            SELECT COUNT(orders.order_id) AS Total_Orders, AVG(orders.order_total) AS Average_Order_Value, MAX(orders.order_total) AS Max_Order_Value, MIN(orders.order_total) AS Min_Order_Value
+            FROM orders;
+            '''
+    cursor = conn.execute(query)
+    result = cursor.fetchone()
+    print(f"Total Orders: {result[0]} , Average Order Value: {result[1]}, Maximum Order Value: {result[2]}, Minimum Order Value: {result[3]}")
 
 
 def driver_summary(conn):
-    pass
+    query = '''
+            SELECT drivers.driver_id, drivers.hire_date 
+            FROM drivers GROUP BY drivers.driver_id;
+            '''
+    cursor = conn.execute(query)
+    result = cursor.fetchall()
+    for x in result:
+        print(f"Driver ID: {x[0]}, Driver Hire Date: {x[1]}")
+    print(f"Total Number of drivers: {len(result)}")
 
 
 # ==================================================

@@ -9,3 +9,5 @@
 
 
 -- You can use this to test your sql before you write it into your program.
+SELECT drivers.driver_id, drivers.hire_date 
+FROM drivers GROUP BY drivers.driver_id;
