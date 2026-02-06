@@ -19,16 +19,15 @@ def customer_tickets(conn, customer_id):
     Order results by film title alphabetically.
 
     """
-    query = '''
+    query = f'''
     SELECT films.title AS film_title, screenings.screen AS screen, tickets.price AS price
     FROM customers JOIN tickets ON customers.customer_id=tickets.customer_id JOIN screenings ON tickets.screening_id=screenings.screening_id JOIN films ON screenings.film_id=films.film_id 
-    WHERE customers.customer_id = ?
-    GROUP BY film_title
+    WHERE customers.customer_id = {customer_id}
     ORDER BY film_title;
     '''
 
     customer_tickets = []
-    cursor = conn.execute(query, (customer_id,))
+    cursor = conn.execute(query)
     result = cursor.fetchall()
     for x in result:
         grouped_data = x[0], x[1], x[2]
