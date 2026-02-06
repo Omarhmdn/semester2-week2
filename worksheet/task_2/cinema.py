@@ -23,7 +23,8 @@ def customer_tickets(conn, customer_id):
     SELECT films.title AS film_title, screenings.screen AS screen, tickets.price AS price
     FROM customers JOIN tickets ON customers.customer_id=tickets.customer_id JOIN screenings ON tickets.screening_id=screenings.screening_id JOIN films ON screenings.film_id=films.film_id 
     WHERE customers.customer_id = ?
-    GROUP BY film_title;
+    GROUP BY film_title
+    ORDER BY film_title;
     '''
 
     customer_tickets = []
@@ -45,7 +46,7 @@ def screening_sales(conn):
     """
     query = '''
     SELECT screenings.screening_id AS screening_id, films.title AS film_title, COUNT(tickets.ticket_id) AS tickets_sold
-    FROM films LEFT JOIN screenings ON films.film_id=screenings.film_id LEFT JOIN tickets ON screenings.screening_id=tickets.screening_id
+    FROM screenings LEFT JOIN films ON screenings.film_id=films.film_id LEFT JOIN tickets ON screenings.screening_id=tickets.screening_id
     GROUP BY screenings.screening_id
     ORDER BY tickets_sold DESC;
     '''
